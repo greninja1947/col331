@@ -37,6 +37,7 @@ TOOLPREFIX := $(shell if i386-jos-elf-objdump -i 2>&1 | grep '^elf32-i386$$' >/d
 	echo "*** To turn off this error, run 'gmake TOOLPREFIX= ...'." 1>&2; \
 	echo "***" 1>&2; exit 1; fi)
 endif
+TOOLPREFIX=i686-elf-
 
 # If the makefile can't find QEMU, specify its path here
 # QEMU = qemu-system-i386

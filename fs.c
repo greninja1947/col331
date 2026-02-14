@@ -194,6 +194,7 @@ readi(struct inode *ip, char *dst, uint off, uint n)
 
 // Directories
 
+/// returns 0 if the names match.
 int
 namecmp(const char *s, const char *t)
 {
@@ -253,6 +254,7 @@ skipelem(char *path, char *name)
   if(*path == 0)
     return 0;
   s = path;
+  /// extract one folder, until we encounter a '/' or the end of the string
   while(*path != '/' && *path != 0)
     path++;
   len = path - s;
@@ -275,10 +277,11 @@ static struct inode*
 namex(char *path, int nameiparent, char *name)
 {
   struct inode *ip, *next;
-
+  /// get the root inode
   ip = iget(ROOTDEV, ROOTINO);
 
   while((path = skipelem(path, name)) != 0){
+    /// after each iteration name contains one folder in the path, and path is updated to contain the rest of the path
     iread(ip);
     if(ip->type != T_DIR){
       irelse(ip);
@@ -305,13 +308,17 @@ namex(char *path, int nameiparent, char *name)
 
 struct inode*
 namei(char *path)
-{
+{ 
+
+  /// gives the inode of the file in path.
   char name[DIRSIZ];
   return namex(path, 0, name);
 }
 
 struct inode*
 nameiparent(char *path, char *name)
-{
+{ 
+
+  /// gives the inode of the parent directory of the file in path.
   return namex(path, 1, name);
 }
