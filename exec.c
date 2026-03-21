@@ -56,8 +56,8 @@ exec(char *path)
   ip = 0;
 
   sp = curproc->sz;
-  *(uint*)sp = 0xffffffff;
   sp -= 4;
+  *(uint*)(curproc->offset + sp) = 0xffffffff;
 
   curproc->tf->eip = elf.entry;  // main
   curproc->tf->esp = sp;
